@@ -1,0 +1,5 @@
+.rar
+.zip
+/file/segment/*.txt
+/file/origin/*.txt
+__pycache__/
