@@ -47,7 +47,7 @@ def generateDict(train_path='file/segment/train.txt', dict_path='file/segment/di
         lines = f.readlines()
     for line in lines:
         words = line.split()
-        words = words[1:]   # 考虑略去行标记数词
+        words = words[1:]   # 考虑略去时间戳数词
         for word in words:
             word = word[1 if word[0] == '[' else 0:word.index('/')]  # 去掉两个空格之间的非词字符
             word_set.add(word)  # 将词加入词典集合, 去重
