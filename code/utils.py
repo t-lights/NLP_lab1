@@ -7,7 +7,7 @@ def generateSegment(ori_paths=['file/origin/199801_seg&pos.txt',
                     truth_path='file/segment/truth.txt', 
                     test_path='file/segment/test.txt'):
     '''
-    同时生成训练集与测试集以及测试集的groundTruth,各文件%7=0的行取为测试集
+    同时生成训练集与测试集以及测试集的groundTruth,各文件%10=0的行取为测试集
     '''
     truth_file = open(truth_path, 'w', encoding='utf-8')
     train_file = open(train_path, 'w', encoding='utf-8')
@@ -16,7 +16,7 @@ def generateSegment(ori_paths=['file/origin/199801_seg&pos.txt',
         with open(ori_path, 'r', encoding='gbk') as f:
             ori_lines = f.readlines()
         for i, line in enumerate(ori_lines):
-            if i % 7 != 0:
+            if i % 10 != 0:
                 train_file.write(line)
             else:
                 words = line.split()
@@ -62,6 +62,8 @@ def outputLine(line=''):
     result = ''
     words = line.split('/ ')
     for i, word in enumerate(words):
+        if word == '':
+            continue
         if word.isascii() or (word in punc):
             buffer += word
             if i + 1 == len(words):
@@ -74,12 +76,13 @@ def outputLine(line=''):
     return result
 
 def preprocessScoreLine(seg_path):
-    with open(seg_path, 'r', 'utf-8') as f:
+    with open(seg_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
     seg_list = []
     for line in lines:
         if line == '\n':
             continue
+        new_line = ''
         for word in line.split():
             new_line += word[1 if word[0] == '[' else 0:word.index('/')] + '/ '
         seg_list.append(new_line)
@@ -111,7 +114,7 @@ def score(truth_path='', result_path=''):
                 num1 += len(truth_words[j])
                 num2 += len(result_words[k])
             else:
-                while True:
+                while True and j < truth_size and k < result_size:
                     if num1 < num2:
                         j += 1
                         num1 += len(truth_words[j])
