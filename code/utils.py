@@ -5,7 +5,9 @@ def generateSegment(ori_paths=['file/origin/199801_seg&pos.txt',
                                'file/origin/199803.txt'],
                     train_path='file/segment/train.txt',
                     truth_path='file/segment/truth.txt', 
-                    test_path='file/segment/test.txt'):
+                    test_path='file/segment/test.txt',
+                    k_max=7,
+                    k_num=0):
     '''
     同时生成训练集与测试集以及测试集的groundTruth,各文件%10=0的行取为测试集
     '''
@@ -16,7 +18,7 @@ def generateSegment(ori_paths=['file/origin/199801_seg&pos.txt',
         with open(ori_path, 'r', encoding='gbk') as f:
             ori_lines = f.readlines()
         for i, line in enumerate(ori_lines):
-            if i % 10 != 0:
+            if i % k_max != k_num:
                 train_file.write(line)
             else:
                 words = line.split()
@@ -37,7 +39,7 @@ def generateSegment(ori_paths=['file/origin/199801_seg&pos.txt',
 
 def generateDict(train_path='file/segment/train.txt', dict_path='file/segment/dict.txt'):
     '''
-    由训练集生成词典,行标记虽然作为数词/m在词表里出现,但是此处考虑不加入词典
+    由训练集生成词典,时间戳虽然作为数词/m在词表里出现,但是此处考虑不加入词典
     '''
     max_length = 0  #最大词长
     word_set = set()
@@ -149,7 +151,8 @@ def outputScore(score_path='file/output/score.txt',
     print(output)
     with open(score_path, 'a', encoding='utf-8') as f:
         f.write(output)
+    return precision, recall, f1
 
 if __name__ == '__main__':
-    generateSegment()
-    generateDict()
+    generateSegment(test_path='test.txt', train_path='train.txt', truth_path='truth.txt',k_max=40, k_num=0)
+    # generateDict()
