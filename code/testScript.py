@@ -4,13 +4,19 @@ from Tokenization_prototype import Tokenization_prototype
 from Tokenization_BinarySearch import Tokenization_BinarySearch
 from utils import outputScore, generateDict, generateSegment
 
-def test_k(k_max, model, time_path):
+def test_k(k_max, model, time_path, model_flag):
     precision = float(0)
     recall = float(0)
     f1 = float(0)
     for i in range(k_max):
         generateSegment(k_max=k_max, k_num=i)
         generateDict()
+        if model_flag == '1':
+            model = Tokenization_prototype()
+        elif model_flag == '2':
+            model = Tokenization_BinarySearch()
+        else:
+            raise ValueError("模型编号不存在")
         output = ''
         print("运行FMM\n")
         start_time = time()
@@ -45,17 +51,17 @@ def test_script():
     k_flag = input("是否进行k折测试?\n0 仅取7的倍数行作为测试集\n大于0的整数k 进行k折测试\n")
     time_path = 'file/output/time.txt'
     output = ''
+    if k_flag != '0':
+        test_k(int(k_flag), time_path, model_flag)
+        return
+    generateSegment()
+    generateDict()
     if model_flag == '1':
         model = Tokenization_prototype()
     elif model_flag == '2':
         model = Tokenization_BinarySearch()
     else:
         raise ValueError("模型编号不存在")
-    if k_flag != '0':
-        test_k(int(k_flag), model, time_path)
-        return
-    generateSegment()
-    generateDict()
     print("运行FMM\n")
     start_time = time()
     model.fmm()
