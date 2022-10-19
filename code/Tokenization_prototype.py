@@ -26,7 +26,6 @@ class Tokenization_prototype:
                         word_try = word_try[:-1]
                     line = line[len(word_try):]
                     result_line += word_try + '/ '
-                print(utils.outputLine(line=result_line) + '\n')
                 result.write(utils.outputLine(line=result_line) + '\n')
 
     def bmm(self, test_path='file/segment/test.txt', result_path='file/output/seg_BMM.txt'):

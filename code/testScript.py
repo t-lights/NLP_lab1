@@ -4,7 +4,7 @@ from Tokenization_prototype import Tokenization_prototype
 from Tokenization_BinarySearch import Tokenization_BinarySearch
 from utils import outputScore, generateDict, generateSegment
 
-def test_k(k_max, model, time_path, model_flag):
+def test_k(k_max, time_path, model_flag):
     precision = float(0)
     recall = float(0)
     f1 = float(0)
